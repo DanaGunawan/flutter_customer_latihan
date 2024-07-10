@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Selection</title>
+    <!-- Add your CSS here -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="category_id">Category Name <span style="color:red;">*</span></label>
+        <select name="category_id" class="form-control" id="category_id">
+          <option value="">--Select Category--</option>
+          <option value="1">Category 1</option>
+          <option value="2">Category 2</option>
+          <option value="3">Category 3</option>
+          <!-- Add more options here as needed -->
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="subCategory_id">Subcategory</label>
+        <select name="subCategory_id" class="form-control" id="subCategory_id">
+          <option value="">--Select Subcategory--</option>
+          <!-- Subcategories will be populated here -->
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery and Bootstrap JS scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#category_id').change(function() {
+            var id = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('admin/products/add') }}",
+                data: {
+                    id: id,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: "json",
+                success: function(data) {
+                    $('#subCategory_id').html(data.options);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
