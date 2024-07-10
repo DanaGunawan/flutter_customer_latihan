@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # flutter_login
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# flutter_customer_latihan
+flutter CRUD
+>>>>>>> bb4d0e1336354b6802bda9bc6fdc676da97857a4
