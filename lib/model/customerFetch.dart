@@ -93,8 +93,6 @@ class CustomerCard extends StatelessWidget {
 
   const CustomerCard({Key? key, required this.customer, required this.refreshCustomerList}) : super(key: key);
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -156,10 +154,12 @@ class CustomerCard extends StatelessWidget {
 
                         if (confirmDelete == true) {
                           try {
-                            builder: (context) => deleteCustomer(customer:customer.id),
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Customer deleted successfully')),
-                            );
+                            await deleteCustomer(customer.id, () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Customer deleted successfully')),
+                              );
+                              refreshCustomerList();
+                            });
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Failed to delete customer: $e')),
@@ -181,6 +181,29 @@ class CustomerCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> deleteCustomer(String userId, VoidCallback onSuccess) async {
+  try {
+    final response = await http.post(
+      Uri.parse('http://172.20.10.4/fluttersql/deleteuser.php'), 
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"id": userId}),
+    );
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['message'] == "User Deleted") {
+        onSuccess();
+      } else {
+        throw Exception('Failed to delete customer: ${jsonResponse['message']}');
+      }
+    } else {
+      throw Exception('Failed to delete customer. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Failed to delete customer. Error: $e');
   }
 }
 

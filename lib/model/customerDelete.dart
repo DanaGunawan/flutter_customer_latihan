@@ -5,7 +5,7 @@ import 'dart:convert';
 Future<void> deleteCustomer(String userId, VoidCallback onSuccess) async {
   try {
     final response = await http.post(
-      Uri.parse('http://10.166.199.58/fluttersql/deleteuser.php'), 
+      Uri.parse('http://172.20.10.4/fluttersql/deleteuser.php'), 
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"id": userId}),
     );
